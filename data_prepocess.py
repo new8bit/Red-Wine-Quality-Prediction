@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
 
-def split_data(file_path='data/data_raw.csv', test_size=0.3, random_state=42, delimiter=';'):
+def split_data(file_path='data/data_raw.csv', test_size=0.3, random_state=522117, delimiter=';'):
     """
     Split the data into training set and test set.
 
