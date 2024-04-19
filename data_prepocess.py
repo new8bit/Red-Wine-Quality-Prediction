@@ -1,4 +1,5 @@
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 
 def split_data(file_path='data/data_raw.csv', test_size=0.3, random_state=522117, delimiter=';'):
@@ -55,8 +56,21 @@ def load_training_data(train_file='data/train.csv', target='quality'):
     data = pd.read_csv(train_file)
     X = data.drop(target, axis=1)
     y = data[target]
-
     return X, y
+
+def normalize_features(X):
+    """
+    Normalize all features
+
+    Parameters:
+    X: pandas.DataFrame, the features to normalize
+
+    Returns:
+    X_normalized: pandas.DataFrame, the normalized features
+    """
+    scaler = MinMaxScaler()
+    X_normalized = pd.DataFrame(scaler.fit_transform(X), columns=X.columns, index=X.index)
+    return X_normalized
     
 if __name__ == '__main__':
     # Split the dataset
