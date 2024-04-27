@@ -58,6 +58,23 @@ def load_training_data(train_file='data/train.csv', target='quality'):
     y = data[target]
     return X, y
 
+def load_test_data(test_file='data/test.csv', target='quality'):
+    """
+    Load test data and return it as features.
+
+    Parameters:
+    test_file: str, path to the test data file
+    target: str, the name of the target variable
+
+    Returns:
+    X: pandas.DataFrame, the features
+    y: pandas.Series, the target variable
+    """
+    data = pd.read_csv(test_file)
+    X = data.drop(target, axis=1)
+    y = data[target]
+    return X, y
+
 def normalize_features(X):
     """
     Normalize all features
