@@ -61,8 +61,8 @@ acc.append(accuracy_score(pred, y_test))
 d = {'Modelling Algo': 'Best model', 'Accuracy': acc}
 print(d)
 
-kfold = KFold(n_splits=5, random_state=42, shuffle=True) # 5折交叉验证
-scores = cross_val_score(clf, x_train, y_train, cv=kfold)  # 使用交叉验证评估模型
+kfold = KFold(n_splits=5, random_state=42, shuffle=True) # 5 folds cross validation
+scores = cross_val_score(clf, x_train, y_train, cv=kfold)  
 print(f'random forest: Mean Accuracy = {scores.mean()}, Standard Deviation = {scores.std()}')
 
-joblib.dump(best_model, 'Random Forest.joblib')
+joblib.dump(best_model, 'models/random_forest.joblib')
