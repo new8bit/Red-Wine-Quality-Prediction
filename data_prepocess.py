@@ -1,5 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.decomposition import PCA
 import pandas as pd
 
 def split_data(file_path='data/data_raw.csv', test_size=0.3, random_state=522117, delimiter=';'):
@@ -88,6 +89,22 @@ def normalize_features(X):
     scaler = MinMaxScaler()
     X_normalized = pd.DataFrame(scaler.fit_transform(X), columns=X.columns, index=X.index)
     return X_normalized
+
+def apply_pca(data, n_components):
+    """
+    Apply PCA to the data and keep a fixed number of features.
+
+    Parameters:
+    data: pandas.DataFrame, the data to be transformed
+    n_components: int, the number of features to keep
+
+    Returns:
+    transformed_data: pandas.DataFrame, the transformed data
+    """
+    pca = PCA(n_components=n_components)
+    transformed_data = pca.fit_transform(data)
+
+    return pd.DataFrame(transformed_data)
     
 if __name__ == '__main__':
     # Split the dataset
