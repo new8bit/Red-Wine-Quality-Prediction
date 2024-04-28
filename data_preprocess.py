@@ -1,7 +1,9 @@
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.decomposition import PCA
 import pandas as pd
+import numpy as np
 
 def split_data(file_path='data/data_raw.csv', test_size=0.3, random_state=522117, delimiter=';'):
     """
@@ -86,7 +88,7 @@ def normalize_features(X):
     Returns:
     X_normalized: pandas.DataFrame, the normalized features
     """
-    scaler = MinMaxScaler()
+    scaler = StandardScaler()
     X_normalized = pd.DataFrame(scaler.fit_transform(X), columns=X.columns, index=X.index)
     return X_normalized
 
@@ -105,6 +107,32 @@ def apply_pca(data, n_components):
     transformed_data = pca.fit_transform(data)
 
     return pd.DataFrame(transformed_data)
+
+def select_features_by_importance(X, y, n_features):
+    """
+    Select features based on their importance determined by a random forest.
+
+    Parameters:
+    X: pandas.DataFrame, the features
+    y: pandas.Series, the target variable
+    n_features: int, the number of features to keep
+
+    Returns:
+    X_selected: pandas.DataFrame, the selected features
+    """
+    # Fit a random forest to the data
+    forest = RandomForestClassifier(random_state=0)
+    forest.fit(X, y)
+
+    # Get the importance of each feature
+    importances = forest.feature_importances_
+
+    # Sort the features by importance and select the top n_features
+    indices = np.argsort(importances)[::-1]
+    selected_features = X.columns[indices[:n_features]]
+
+    # Return the selected features
+    return X[selected_features]
     
 if __name__ == '__main__':
     # Split the dataset
