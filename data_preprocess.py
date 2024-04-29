@@ -133,6 +133,27 @@ def select_features_by_importance(X, y, n_features):
 
     # Return the selected features
     return X[selected_features]
+
+def remove_outliers(df, feature_names):
+    '''
+    For each of the features from the dataset, remove the outliers.
+
+    Parameters:
+    df: DataFrame
+    feature_names: feature names
+
+    Returns:
+    cleaned_df: cleaned dataframe
+    '''
+    clean_df = df.copy()
+    for feature in feature_names:
+        Q1 = clean_df[feature].quantile(0.1)
+        Q3 = clean_df[feature].quantile(0.9)
+        IQR = Q3 - Q1
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
+        clean_df = clean_df[(clean_df[feature] >= lower_bound) & (clean_df[feature] <= upper_bound)]
+    return clean_df
     
 if __name__ == '__main__':
     # Split the dataset
